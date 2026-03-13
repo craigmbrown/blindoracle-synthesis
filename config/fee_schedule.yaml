@@ -1,0 +1,67 @@
+# BlindOracle Fee Schedule
+# All prices in USDC on Base L2
+
+version: "1.0.0"
+
+endpoints:
+  create_market:
+    price: 0.001
+    currency: USDC
+    network: base
+    description: "Create a new prediction market"
+
+  place_prediction:
+    price: 0.0005
+    currency: USDC
+    network: base
+    description: "Submit a private prediction position"
+    notes: "Plus 0.1% of position amount"
+
+  settle_market:
+    price: 0.002
+    currency: USDC
+    network: base
+    description: "Resolve market and distribute winnings"
+
+  verify_credential:
+    price: 0.0002
+    currency: USDC
+    network: base
+    description: "Verify agent credential portfolio"
+
+  mint_credential:
+    price: 0.001
+    currency: USDC
+    network: base
+    description: "Mint verifiable credential badge"
+
+  check_balance:
+    price: 0.0
+    description: "Check account balance (free)"
+
+  health_check:
+    price: 0.0
+    description: "Health check (free)"
+
+volume_discounts:
+  - tier: developer_trial
+    max_settlements: 1000
+    discount_percent: 100
+    description: "First 1,000 settlements FREE"
+
+  - tier: growth
+    min_settlements: 1001
+    max_settlements: 10000
+    discount_percent: 0
+    description: "Standard pricing"
+
+  - tier: fleet
+    min_settlements: 10001
+    discount_percent: 40
+    description: "40% volume discount for large-scale agents"
+
+fee_routing:
+  platform: 75%
+  gas_reserve: 15%
+  llm_costs: 5%
+  cache_maintenance: 5%

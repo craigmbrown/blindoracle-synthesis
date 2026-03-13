@@ -1,0 +1,50 @@
+{
+  "synthesis_registration": {
+    "participantId": "0447a8d86fa94552b0cf82f37b8fe46f",
+    "teamId": "d499a0506bdf4248bcdac9cf0564a735",
+    "name": "BlindOracle",
+    "apiKey": "REDACTED",
+    "registrationTxn": "https://basescan.org/tx/0xc24b6575c16fe8bb768a7f21b92555e748e88baad42891c5fc58e7b22046d01f",
+    "registered_at": "2026-03-13T00:00:00Z",
+    "agentHarness": "claude-code",
+    "model": "claude-opus-4-6"
+  },
+  "base_mainnet_contracts": {
+    "PrivateClaimVerifier": {
+      "address": "0x1CF258fA07a620fE86166150fd8619afAD1c9a3D",
+      "basescan": "https://basescan.org/address/0x1CF258fA07a620fE86166150fd8619afAD1c9a3D",
+      "deployed_at": "2026-02-16",
+      "purpose": "Privacy commit-reveal for predictions"
+    },
+    "UnifiedPredictionSubscription": {
+      "address": "0x0d5a467af8bB3968fAc4302Bb6851276EA56880c",
+      "basescan": "https://basescan.org/address/0x0d5a467af8bB3968fAc4302Bb6851276EA56880c",
+      "deployed_at": "2026-02-16",
+      "purpose": "Market creation + multi-AI consensus"
+    }
+  },
+  "base_sepolia_contracts": {
+    "PrivateClaimVerifier": "0xd4fa40D0E99c0805B67355ba44d98cD13fE5c38E",
+    "UnifiedPredictionSubscription": "0x24F990CC709fD4e9952D0C3287461820Bd132BBb"
+  },
+  "agent_identity": {
+    "nostr_pubkey_consensusking": "e045d7a630c11ec5",
+    "nostr_relays": [
+      "wss://relay.damus.io",
+      "wss://nos.lol",
+      "wss://relay.nostr.band"
+    ],
+    "proof_types": 15,
+    "proof_kinds": "30010-30023 + Kind 1 + Kind 30099 (encrypted)",
+    "agents_with_keypairs": 19,
+    "agents_with_reputation": 17,
+    "platinum_agents": 7,
+    "total_proofs": 139,
+    "total_qa_pairs": 330
+  },
+  "services": {
+    "x402_gateway": {"port": 8402, "status": "active"},
+    "camel_security": {"port": 8403, "status": "active"},
+    "a2a_server": {"protocol": "JSON-RPC 2.0", "skills": 11}
+  }
+}

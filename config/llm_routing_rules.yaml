@@ -1,0 +1,96 @@
+# BlindOracle LLM Routing Rules
+# Copyright (c) 2025 Craig M. Brown. All rights reserved.
+#
+# Model selection, tier routing, and cost ceilings for all AI operations.
+# Used by the consensus engine and agent orchestration layer.
+
+version: "1.0.0"
+max_plan_mode: true
+
+tiers:
+  free_tier:
+    description: "Anthropic Max plan models - zero marginal cost"
+    models:
+      - claude-sonnet-4
+      - claude-haiku-4-5
+      - claude-opus-4
+    priority: 1
+    cost_per_call: 0.00
+
+  fast_cheap:
+    description: "Groq-hosted models for low-latency, low-cost tasks"
+    models:
+      - groq/llama-3.3-70b-versatile
+      - groq/llama-3.1-8b-instant
+      - groq/gemma2-9b-it
+    priority: 2
+    cost_per_call: 0.001
+
+  uncensored:
+    description: "Venice uncensored models for unbiased market analysis"
+    models:
+      - venice/llama-3.3-70b
+    priority: 3
+    cost_per_call: 0.002
+
+  budget:
+    description: "Cost-effective models for routine classification"
+    models:
+      - gemini-2.0-flash
+      - gpt-4o-mini
+    priority: 4
+    cost_per_call: 0.003
+
+  premium:
+    description: "High-capability models for disputed consensus only"
+    models:
+      - gpt-4o
+      - grok-3
+    priority: 5
+    cost_per_call: 0.02
+    usage_policy: "disputed_consensus_only"
+
+consensus_calls:
+  primary:
+    tier: free_tier
+    model: claude-sonnet-4
+    description: "Default consensus model, zero cost on Max plan"
+
+  secondary:
+    tier: fast_cheap
+    model: groq/llama-3.3-70b-versatile
+    description: "Fallback for latency or availability issues"
+
+  tertiary:
+    tier: uncensored
+    model: venice/llama-3.3-70b
+    description: "Uncensored third opinion for contentious markets"
+
+  dispute_resolution:
+    tier: premium
+    model: gpt-4o
+    description: "Only invoked when primary/secondary/tertiary disagree"
+
+cost_ceilings:
+  per_agent_run: 0.05
+  per_consensus: 0.02
+  daily_total: 5.00
+  weekly_total: 25.00
+  monthly_total: 80.00
+
+routing_rules:
+  - name: "max_plan_first"
+    condition: "always"
+    action: "prefer free_tier models when available"
+
+  - name: "dispute_escalation"
+    condition: "consensus_disagreement >= 2"
+    action: "escalate to premium tier for final resolution"
+
+  - name: "budget_fallback"
+    condition: "free_tier unavailable AND fast_cheap unavailable"
+    action: "fall back to budget tier"
+
+  - name: "cost_ceiling_enforcement"
+    condition: "daily_spend >= daily_total ceiling"
+    action: "reject non-critical requests, queue for next day"

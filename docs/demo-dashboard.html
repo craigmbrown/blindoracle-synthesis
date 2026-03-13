@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlindOracle - Synthesis.md Demo Dashboard</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-elevated: #1a1a28;
+            --bg-hover: #222236;
+            --accent-blue: #4a9eff;
+            --accent-cyan: #00d4ff;
+            --accent-green: #00ff88;
+            --accent-purple: #a855f7;
+            --accent-orange: #ff9500;
+            --accent-red: #ff4444;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9898b0;
+            --text-muted: #606078;
+            --border: #2a2a3e;
+            --glow-blue: rgba(74, 158, 255, 0.15);
+            --glow-green: rgba(0, 255, 136, 0.15);
+            --glow-purple: rgba(168, 85, 247, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Cascadia Code', monospace;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                linear-gradient(rgba(74, 158, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74, 158, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .hero {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+        }
+
+        .logo-mark {
+            font-size: 14px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .hero .tagline {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .hero .registration-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 8px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-green);
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--accent-green);
+            box-shadow: 0 0 20px var(--glow-green);
+        }
+
+        .registration-badge .dot {
+            width: 8px; height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 30px 0;
+        }
+
+        .stat-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-item:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px var(--glow-blue);
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Theme alignment */
+        .themes {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .theme-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+
+        .theme-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+        }
+
+        .theme-card:nth-child(1)::before { background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); }
+        .theme-card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent-green), #00cc66); }
+        .theme-card:nth-child(3)::before { background: linear-gradient(90deg, var(--accent-purple), #c084fc); }
+        .theme-card:nth-child(4)::before { background: linear-gradient(90deg, var(--accent-orange), #ffb347); }
+
+        .theme-card:nth-child(1):hover { border-color: var(--accent-blue); }
+        .theme-card:nth-child(2):hover { border-color: var(--accent-green); }
+        .theme-card:nth-child(3):hover { border-color: var(--accent-purple); }
+        .theme-card:nth-child(4):hover { border-color: var(--accent-orange); }
+
+        .theme-card h3 {
+            font-size: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-card .evidence {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .theme-card .evidence code {
+            background: var(--bg-dark);
+            color: var(--accent-cyan);
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        /* Demo Acts */
+        .section-title {
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin: 40px 0 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .demo-timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .demo-timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent-blue), var(--accent-green), var(--accent-purple));
+        }
+
+        .act {
+            position: relative;
+            margin-bottom: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .act:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 30px var(--glow-blue);
+        }
+
+        .act::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 28px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            background: var(--bg-dark);
+        }
+
+        .act:nth-child(2)::before { border-color: var(--accent-green); }
+        .act:nth-child(3)::before { border-color: var(--accent-purple); }
+
+        .act-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .act-number {
+            font-size: 11px;
+            color: var(--accent-blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .act:nth-child(2) .act-number { color: var(--accent-green); }
+        .act:nth-child(3) .act-number { color: var(--accent-purple); }
+
+        .act-duration {
+            font-size: 11px;
+            color: var(--text-muted);
+            background: var(--bg-dark);
+            padding: 4px 12px;
+            border-radius: 100px;
+        }
+
+        .act h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .act p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .act .evidence-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .evidence-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .evidence-tag:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-cyan);
+        }
+
+        a.evidence-tag {
+            cursor: pointer;
+        }
+
+        /* Contract addresses */
+        .contracts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .contract-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .contract-card:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .contract-name {
+            font-size: 14px;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+        }
+
+        .contract-address {
+            font-size: 12px;
+            color: var(--text-muted);
+            word-break: break-all;
+            margin-bottom: 8px;
+        }
+
+        .contract-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .contract-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 14px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--accent-blue);
+            border-radius: 6px;
+            color: var(--accent-blue);
+            font-size: 11px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .contract-link:hover {
+            background: var(--accent-blue);
+            color: var(--bg-dark);
+        }
+
+        /* Agent grid */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .agent-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .agent-chip:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-1px);
+        }
+
+        .agent-chip .name {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .agent-chip .team {
+            color: var(--text-muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .agent-chip .score {
+            float: right;
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        .badge-platinum { color: #e5e4e2 !important; }
+        .badge-gold { color: #ffd700 !important; }
+        .badge-silver { color: #c0c0c0 !important; }
+
+        /* Payment flow diagram */
+        .flow-diagram {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .flow-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 700px;
+        }
+
+        .flow-step {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            text-align: center;
+            min-width: 120px;
+            transition: all 0.3s;
+        }
+
+        .flow-step:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px var(--glow-blue);
+        }
+
+        .flow-step .step-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .flow-step .step-value {
+            font-size: 13px;
+            color: var(--accent-cyan);
+            margin-top: 4px;
+        }
+
+        .flow-arrow {
+            color: var(--accent-blue);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Bounty targets */
+        .bounty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 14px;
+            margin: 20px 0;
+        }
+
+        .bounty-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .bounty-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .bounty-card .prize {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 4px;
+        }
+
+        .bounty-card .track {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .bounty-card .fit {
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .fit-score {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .fit-high { background: rgba(0, 255, 136, 0.15); color: var(--accent-green); }
+        .fit-medium { background: rgba(255, 149, 0, 0.15); color: var(--accent-orange); }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .footer p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .themes { grid-template-columns: 1fr; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .contracts { grid-template-columns: 1fr; }
+            .demo-timeline { padding-left: 30px; }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in:nth-child(2) { animation-delay: 0.1s; }
+        .fade-in:nth-child(3) { animation-delay: 0.2s; }
+        .fade-in:nth-child(4) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero -->
+        <header class="hero fade-in">
+            <div class="logo-mark">Synthesis.md Hackathon</div>
+            <h1>BlindOracle</h1>
+            <p class="tagline">Private Intelligence, Verified Trust</p>
+            <div class="registration-badge">
+                <span class="dot"></span>
+                Registered on Base Mainnet via ERC-8004
+            </div>
+        </header>
+
+        <!-- Stats -->
+        <div class="stats-bar fade-in">
+            <div class="stat-item">
+                <div class="stat-value">25</div>
+                <div class="stat-label">Running Agents</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">17</div>
+                <div class="stat-label">Reputation Scored</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">139</div>
+                <div class="stat-label">Verifiable Proofs</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Mainnet Contracts</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">15</div>
+                <div class="stat-label">Proof Types</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">7</div>
+                <div class="stat-label">Platinum Agents</div>
+            </div>
+        </div>
+
+        <!-- Theme Alignment -->
+        <div class="section-title">Theme Alignment</div>
+        <div class="themes fade-in">
+            <div class="theme-card">
+                <h3>Agents that Pay</h3>
+                <div class="evidence">
+                    <code>x402</code> HTTP 402 micropayment gateway live on port 8402.
+                    Agents pay per-call: market creation <code>0.001 USDC</code>,
+                    predictions <code>0.5%</code>, settlements <code>1%</code>.
+                    Multi-rail: Base USDC + Fedimint eCash + Lightning.
+                </div>
+            </div>
+            <div class="theme-card">
+                <h3>Agents that Trust</h3>
+                <div class="evidence">
+                    3-layer trust stack: <code>Nostr proofs</code> (15 types, 3 relays) +
+                    <code>AgentRegistry.sol</code> (on-chain reputation 0-10000) +
+                    per-agent <code>HMAC-SHA256</code> API keys with audit logs.
+                </div>
+            </div>
+            <div class="theme-card">
+                <h3>Agents that Cooperate</h3>
+                <div class="evidence">
+                    <code>A2A Protocol</code> (JSON-RPC 2.0) with 11 discoverable skills.
+                    <code>UnifiedPredictionSubscription.sol</code> enforces market agreements.
+                    67% Byzantine consensus for dispute resolution.
+                </div>
+            </div>
+            <div class="theme-card">
+                <h3>Agents that Keep Secrets</h3>
+                <div class="evidence">
+                    <code>AES-256-GCM</code> encrypted Nostr proofs (Kind 30099).
+                    <code>PrivateClaimVerifier.sol</code> commit-reveal:
+                    <code>keccak256(secret||pos||amt)</code>.
+                    Blind-signed eCash for untraceable settlement.
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Walkthrough -->
+        <div class="section-title">3-Act Demo Walkthrough</div>
+        <div class="demo-timeline fade-in">
+            <div class="act">
+                <div class="act-header">
+                    <span class="act-number">Act 1 &mdash; Identity</span>
+                    <span class="act-duration">60 seconds</span>
+                </div>
+                <h3>Agent Provisions Cryptographic Identity</h3>
+                <p>
+                    A BlindOracle agent provisions its own Nostr keypair (secp256k1),
+                    generates an HMAC-SHA256 API key, creates its SQLite identity database,
+                    registers on AgentRegistry.sol, and publishes an AES-256-GCM encrypted
+                    capability proof to 3 Nostr relays. The agent exists on-chain with
+                    verifiable, portable identity.
+                </p>
+                <div class="evidence-list">
+                    <a class="evidence-tag" href="https://basescan.org/tx/0xc24b6575c16fe8bb768a7f21b92555e748e88baad42891c5fc58e7b22046d01f" target="_blank">ERC-8004 Registration Tx</a>
+                    <span class="evidence-tag">services/proof/agent_identity.py</span>
+                    <span class="evidence-tag">Nostr Kind 30099</span>
+                    <span class="evidence-tag">Per-agent SQLite DB</span>
+                </div>
+            </div>
+
+            <div class="act">
+                <div class="act-header">
+                    <span class="act-number">Act 2 &mdash; Payment + Agreement</span>
+                    <span class="act-duration">120 seconds</span>
+                </div>
+                <h3>Agent-to-Agent Payment via x402</h3>
+                <p>
+                    A second agent discovers the first via its A2A agent card (JSON-RPC 2.0).
+                    It calls the x402 gateway, receives HTTP 402 with payment requirements,
+                    pays 0.0005 USDC on Base, and places a prediction. The position is
+                    recorded on PrivateClaimVerifier.sol as a keccak256 commitment &mdash;
+                    the position itself is never revealed on-chain.
+                </p>
+                <div class="evidence-list">
+                    <span class="evidence-tag">HTTP 402 Flow</span>
+                    <a class="evidence-tag" href="https://basescan.org/address/0x1CF258fA07a620fE86166150fd8619afAD1c9a3D" target="_blank">PrivateClaimVerifier</a>
+                    <span class="evidence-tag">distribution/x402_api_gateway.py</span>
+                    <span class="evidence-tag">distribution/a2a_agent_card.json</span>
+                </div>
+            </div>
+
+            <div class="act">
+                <div class="act-header">
+                    <span class="act-number">Act 3 &mdash; Resolution + Privacy</span>
+                    <span class="act-duration">120 seconds</span>
+                </div>
+                <h3>Commit-Reveal Settlement with eCash</h3>
+                <p>
+                    The market resolves via multi-AI consensus (67% Byzantine threshold).
+                    The winning agent reveals its commitment (secret + position + amount),
+                    the contract verifies the keccak256 hash matches, and settlement occurs
+                    via blind-signed Fedimint eCash &mdash; untraceable to any observer.
+                    The agent's reputation score updates on AgentRegistry.sol.
+                </p>
+                <div class="evidence-list">
+                    <a class="evidence-tag" href="https://basescan.org/address/0x0d5a467af8bB3968fAc4302Bb6851276EA56880c" target="_blank">UnifiedPredictionSubscription</a>
+                    <span class="evidence-tag">Fedimint eCash</span>
+                    <span class="evidence-tag">services/reputation/engine.py</span>
+                    <span class="evidence-tag">67% Byzantine Consensus</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- x402 Payment Flow -->
+        <div class="section-title">x402 Payment Flow</div>
+        <div class="flow-diagram fade-in">
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="step-label">Agent B</div>
+                    <div class="step-value">GET /v1/markets</div>
+                </div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step">
+                    <div class="step-label">Gateway</div>
+                    <div class="step-value">402 Required</div>
+                </div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step">
+                    <div class="step-label">Agent B</div>
+                    <div class="step-value">Pay 0.001 USDC</div>
+                </div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step">
+                    <div class="step-label">Base L2</div>
+                    <div class="step-value">Verify on-chain</div>
+                </div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step">
+                    <div class="step-label">Gateway</div>
+                    <div class="step-value">200 + Data</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Smart Contracts -->
+        <div class="section-title">Verified Contracts (Base Mainnet)</div>
+        <div class="contracts fade-in">
+            <div class="contract-card">
+                <div class="contract-name">PrivateClaimVerifier.sol</div>
+                <div class="contract-address">0x1CF258fA07a620fE86166150fd8619afAD1c9a3D</div>
+                <div class="contract-desc">
+                    Privacy layer using commit-reveal scheme. Agents submit keccak256(secret || position || amount)
+                    commitments. Zero identity linkage between commitment and agent.
+                </div>
+                <a class="contract-link" href="https://basescan.org/address/0x1CF258fA07a620fE86166150fd8619afAD1c9a3D" target="_blank">View on BaseScan &rarr;</a>
+            </div>
+            <div class="contract-card">
+                <div class="contract-name">UnifiedPredictionSubscription.sol</div>
+                <div class="contract-address">0x0d5a467af8bB3968fAc4302Bb6851276EA56880c</div>
+                <div class="contract-desc">
+                    Combined prediction market + subscription contract. Multi-AI consensus resolution,
+                    24h dispute period, CRE integration, staking mechanism.
+                </div>
+                <a class="contract-link" href="https://basescan.org/address/0x0d5a467af8bB3968fAc4302Bb6851276EA56880c" target="_blank">View on BaseScan &rarr;</a>
+            </div>
+        </div>
+
+        <!-- Prize Targets -->
+        <div class="section-title">Target Bounties</div>
+        <div class="bounty-grid fade-in">
+            <div class="bounty-card">
+                <div class="prize">$14,059</div>
+                <div class="track">Open Track</div>
+                <div class="fit">Community-funded prize pool. Full system demo covers all 4 themes. <span class="fit-score fit-high">Strong Fit</span></div>
+            </div>
+            <div class="bounty-card">
+                <div class="prize">$5,750</div>
+                <div class="track">Venice AI</div>
+                <div class="fit">Private LLM inference for agent decision-making. Venice already in our LLM routing config. <span class="fit-score fit-high">Strong Fit</span></div>
+            </div>
+            <div class="bounty-card">
+                <div class="prize">TBD</div>
+                <div class="track">ERC-8004 "Agents With Receipts"</div>
+                <div class="fit">BlindOracle registered via ERC-8004 on Base Mainnet. On-chain identity + verifiable proofs. <span class="fit-score fit-high">Strong Fit</span></div>
+            </div>
+            <div class="bounty-card">
+                <div class="prize">TBD</div>
+                <div class="track">"Let the Agent Cook"</div>
+                <div class="fit">25 autonomous agents running in production. No human required for market creation, resolution, settlement. <span class="fit-score fit-medium">Good Fit</span></div>
+            </div>
+        </div>
+
+        <!-- Agent Fleet Sample -->
+        <div class="section-title">Agent Fleet (Top Scored)</div>
+        <div class="agent-grid fade-in">
+            <div class="agent-chip">
+                <span class="score badge-platinum">98.2</span>
+                <div class="name">market-analyst</div>
+                <div class="team">Alpha Team</div>
+            </div>
+            <div class="agent-chip">
+                <span class="score badge-platinum">97.5</span>
+                <div class="name">consensus-engine</div>
+                <div class="team">Core Team</div>
+            </div>
+            <div class="agent-chip">
+                <span class="score badge-platinum">96.8</span>
+                <div class="name">data-collector</div>
+                <div class="team">Intel Team</div>
+            </div>
+            <div class="agent-chip">
+                <span class="score badge-platinum">96.1</span>
+                <div class="name">risk-assessor</div>
+                <div class="team">Alpha Team</div>
+            </div>
+            <div class="agent-chip">
+                <span class="score badge-platinum">95.7</span>
+                <div class="name">settlement-engine</div>
+                <div class="team">Finance Team</div>
+            </div>
+            <div class="agent-chip">
+                <span class="score badge-platinum">95.3</span>
+                <div class="name">proof-publisher</div>
+                <div class="team">Trust Team</div>
+            </div>
+            <div class="agent-chip">
+                <span class="score badge-platinum">95.0</span>
+                <div class="name">privacy-guardian</div>
+                <div class="team">Security Team</div>
+            </div>
+            <div class="agent-chip">
+                <span class="score badge-gold">93.4</span>
+                <div class="name">crm-manager</div>
+                <div class="team">Ops Team</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>
+                <strong>BlindOracle</strong> &mdash; Synthesis.md Hackathon Submission<br>
+                Built by BlindOracle (claude-opus-4-6) + Craig M. Brown (@cmb24k2)<br>
+                <a href="https://basescan.org/tx/0xc24b6575c16fe8bb768a7f21b92555e748e88baad42891c5fc58e7b22046d01f">Registration Tx</a> &bull;
+                <a href="https://github.com/craigmbrown/ETAC-System">GitHub</a> &bull;
+                <a href="https://synthesis.devfolio.co">Synthesis.md</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
