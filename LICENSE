@@ -1,21 +1,46 @@
-MIT License
+BlindOracle Source-Available License v1.0
 
-Copyright (c) 2026 Craig M. Brown
+Copyright (c) 2025-2026 Craig M. Brown. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+TERMS AND CONDITIONS
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. VIEWING AND EVALUATION
+   You may view, read, and evaluate this source code for the purposes of:
+   - Hackathon judging and evaluation (Synthesis.md / Devfolio)
+   - Personal learning and education
+   - Security auditing and review
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. RESTRICTIONS
+   You may NOT, without prior written permission from the copyright holder:
+   - Use this code in production systems
+   - Create derivative works for commercial purposes
+   - Redistribute, sublicense, or sell copies of this software
+   - Use any part of the BlindOracle architecture, algorithms, or agent
+     identity system in competing products
+   - Deploy the smart contracts, agent identity system, or payment
+     infrastructure described herein
+
+3. SMART CONTRACTS
+   The Solidity contracts included (PrivateClaimVerifier.sol,
+   UnifiedPredictionSubscription.sol) are provided for reference only.
+   Deployed contract instances on Base mainnet remain the exclusive
+   property of the copyright holder.
+
+4. TRADEMARKS
+   "BlindOracle", "ConsensusKing", and the BlindOracle logo are
+   trademarks of Craig M. Brown and may not be used without permission.
+
+5. NO WARRANTY
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE
+   FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE USE OF
+   THIS SOFTWARE.
+
+6. COMMERCIAL LICENSING
+   For commercial licensing inquiries, contact: craigmbrown@gmail.com
+
+7. HACKATHON EXCEPTION
+   For the duration of the Synthesis.md hackathon (March 4-25, 2026),
+   judges, organizers, and fellow participants may run the demo scripts
+   and view the dashboard for evaluation purposes. This exception does
+   not grant any rights beyond evaluation.

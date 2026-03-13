@@ -617,28 +617,28 @@
         <!-- Stats -->
         <div class="stats-bar fade-in">
             <div class="stat-item">
-                <div class="stat-value">25</div>
-                <div class="stat-label">Running Agents</div>
+                <div class="stat-value">82</div>
+                <div class="stat-label">Agents with Proofs</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value">17</div>
-                <div class="stat-label">Reputation Scored</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">139</div>
+                <div class="stat-value">1,315</div>
                 <div class="stat-label">Verifiable Proofs</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value">2</div>
-                <div class="stat-label">Mainnet Contracts</div>
+                <div class="stat-value">3,690</div>
+                <div class="stat-label">Extractable Q&amp;A</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">248</div>
+                <div class="stat-label">Proof Chains</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value">15</div>
                 <div class="stat-label">Proof Types</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value">7</div>
-                <div class="stat-label">Platinum Agents</div>
+                <div class="stat-value">3</div>
+                <div class="stat-label">Nostr Relays</div>
             </div>
         </div>
 
@@ -869,6 +869,126 @@
                 <span class="score badge-gold">93.4</span>
                 <div class="name">crm-manager</div>
                 <div class="team">Ops Team</div>
+            </div>
+        </div>
+
+        <!-- Verifiable Trust Infrastructure -->
+        <div class="section-title">Verifiable Trust Infrastructure</div>
+
+        <!-- Nostr Relay Network -->
+        <div class="flow-diagram fade-in" style="margin-bottom: 16px;">
+            <h3 style="font-size: 14px; color: var(--accent-cyan); margin-bottom: 12px;">Nostr Proof Relay Network</h3>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;">
+                ConsensusKing pubkey: <code style="background: var(--bg-dark); color: var(--accent-cyan); padding: 2px 6px; border-radius: 3px; font-size: 11px;">e045d7a630c11ec5...</code>
+                &bull; Encrypted proofs: Kind <code style="background: var(--bg-dark); color: var(--accent-cyan); padding: 2px 6px; border-radius: 3px; font-size: 11px;">30099</code> (AES-256-GCM)
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <div class="agent-chip" style="text-align: center;">
+                    <div class="name" style="color: var(--accent-green);">wss://relay.damus.io</div>
+                    <div class="team">Primary Relay</div>
+                </div>
+                <div class="agent-chip" style="text-align: center;">
+                    <div class="name" style="color: var(--accent-green);">wss://nos.lol</div>
+                    <div class="team">Secondary Relay</div>
+                </div>
+                <div class="agent-chip" style="text-align: center;">
+                    <div class="name" style="color: var(--accent-green);">wss://relay.nostr.band</div>
+                    <div class="team">Tertiary Relay</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proof Type Breakdown (real data from proof_qa.db) -->
+        <div class="contracts fade-in" style="margin-bottom: 16px;">
+            <div class="contract-card">
+                <div class="contract-name">Proof Types (1,315 total from 82 agents)</div>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 8px;">
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--text-secondary);">ProofOfCompute</td>
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--accent-cyan); text-align: right;">248</td>
+                        <td style="padding: 6px 8px; font-size: 11px; color: var(--text-muted);">Kind 30012</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--text-secondary);">ProofOfWitness</td>
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--accent-cyan); text-align: right;">229</td>
+                        <td style="padding: 6px 8px; font-size: 11px; color: var(--text-muted);">Kind 30013</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--text-secondary);">ProofOfPresence</td>
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--accent-cyan); text-align: right;">195</td>
+                        <td style="padding: 6px 8px; font-size: 11px; color: var(--text-muted);">Kind 30010</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--text-secondary);">ProofOfDelegation</td>
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--accent-cyan); text-align: right;">129</td>
+                        <td style="padding: 6px 8px; font-size: 11px; color: var(--text-muted);">Kind 30014</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--text-secondary);">ProofOfBenchmark</td>
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--accent-cyan); text-align: right;">128</td>
+                        <td style="padding: 6px 8px; font-size: 11px; color: var(--text-muted);">Kind 30015</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--text-secondary);">ProofOfBelonging</td>
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--accent-cyan); text-align: right;">76</td>
+                        <td style="padding: 6px 8px; font-size: 11px; color: var(--text-muted);">Kind 30011</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--text-secondary);">ReputationAttestation</td>
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--accent-cyan); text-align: right;">55</td>
+                        <td style="padding: 6px 8px; font-size: 11px; color: var(--text-muted);">Kind 30017</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--text-secondary);">+ 8 more types</td>
+                        <td style="padding: 6px 8px; font-size: 12px; color: var(--accent-cyan); text-align: right;">255</td>
+                        <td style="padding: 6px 8px; font-size: 11px; color: var(--text-muted);">Kinds 30016-30023</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="contract-card">
+                <div class="contract-name">On-Chain Trust Layer</div>
+                <div style="margin-top: 10px;">
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                        <span style="font-size: 12px; color: var(--text-secondary);">AgentRegistry.sol</span>
+                        <span style="font-size: 12px; color: var(--accent-green);">17 agents scored</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                        <span style="font-size: 12px; color: var(--text-secondary);">Reputation Scale</span>
+                        <span style="font-size: 12px; color: var(--accent-cyan);">0 &ndash; 10,000</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                        <span style="font-size: 12px; color: var(--text-secondary);">Avg Score</span>
+                        <span style="font-size: 12px; color: var(--accent-cyan);">9,000</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                        <span style="font-size: 12px; color: var(--text-secondary);">Platinum (>9500)</span>
+                        <span style="font-size: 12px; color: #e5e4e2;">7 agents</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                        <span style="font-size: 12px; color: var(--text-secondary);">Proof Chain Depth</span>
+                        <span style="font-size: 12px; color: var(--accent-cyan);">248 chains</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                        <span style="font-size: 12px; color: var(--text-secondary);">Identity Auth</span>
+                        <span style="font-size: 12px; color: var(--accent-cyan);">HMAC-SHA256</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <span style="font-size: 12px; color: var(--text-secondary);">Encrypted Backup</span>
+                        <span style="font-size: 12px; color: var(--accent-cyan);">Kind 30099 (AES-256-GCM)</span>
+                    </div>
+                </div>
+                <a class="contract-link" href="https://basescan.org/address/0x1CF258fA07a620fE86166150fd8619afAD1c9a3D" target="_blank" style="margin-top: 12px;">Verify on BaseScan &rarr;</a>
+            </div>
+        </div>
+
+        <!-- Sample Proof Chain IDs -->
+        <div class="flow-diagram fade-in" style="margin-bottom: 20px;">
+            <h3 style="font-size: 14px; color: var(--accent-cyan); margin-bottom: 12px;">Sample Proof Chain Hashes (SHA-256)</h3>
+            <div style="font-family: monospace; font-size: 11px; line-height: 2; color: var(--text-muted);">
+                <div><span style="color: var(--text-secondary);">benchmark-analyst</span> <code style="background: var(--bg-dark); color: var(--accent-cyan); padding: 1px 5px; border-radius: 3px;">40a93e305a8fcc5ef9e134ddf9d46460...</code></div>
+                <div><span style="color: var(--text-secondary);">financial-analyst</span> <code style="background: var(--bg-dark); color: var(--accent-cyan); padding: 1px 5px; border-radius: 3px;">42713b49dbe36226d2afba6a...</code></div>
+                <div><span style="color: var(--text-secondary);">byzantine-consensus</span> <code style="background: var(--bg-dark); color: var(--accent-cyan); padding: 1px 5px; border-radius: 3px;">46d2e842efd661a26b220f02...</code></div>
+                <div style="color: var(--text-muted); margin-top: 4px;">+ 245 more chains across 82 agents</div>
             </div>
         </div>
 

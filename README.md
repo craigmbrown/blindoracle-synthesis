@@ -167,4 +167,4 @@ Private agent intelligence via Venice uncensored LLM + AES-256-GCM encrypted Nos
 
 ## License
 
-MIT
+Source-Available (see [LICENSE](./LICENSE)). Viewing and evaluation permitted for hackathon judging, education, and security review. Commercial use requires written permission.
