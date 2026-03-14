@@ -94,10 +94,47 @@ See [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for detailed system diagram.
 - **19** agents with independent Nostr keypairs
 - **17** agents with on-chain reputation scores (avg 90.0)
 - **7** platinum-rated agents (score >95)
-- **139** verifiable proofs in Proof DB
-- **330** Q&A pairs extracted from proofs
+- **1,315** verifiable proofs in Proof DB
+- **3,690** Q&A pairs extracted from proofs
+- **248** proof chains across 82 agents
 - **15** distinct proof types (Nostr Kinds 30010-30023)
 - **2** verified mainnet contracts on Base L2
+
+## Verifiable Trust Infrastructure
+
+### Nostr Proof Network
+All agent proofs are published to 3 Nostr relays (`wss://relay.damus.io`, `wss://nos.lol`, `wss://relay.nostr.band`) under the ConsensusKing pubkey `e045d7a630c11ec5...`. Encrypted proofs use Kind 30099 with AES-256-GCM -- opaque to anyone without the master key.
+
+| Proof Type | Count | Nostr Kind | Description |
+|:---|---:|:---|:---|
+| ProofOfCompute | 248 | 30012 | Agent computation verification |
+| ProofOfWitness | 229 | 30013 | Cross-agent attestation |
+| ProofOfPresence | 195 | 30010 | Agent liveness proof |
+| ProofOfDelegation | 129 | 30014 | Authority delegation chain |
+| ProofOfBenchmark | 128 | 30015 | Performance evaluation |
+| ProofOfBelonging | 76 | 30011 | Team membership proof |
+| ReputationAttestation | 55 | 30017 | On-chain reputation snapshot |
+| + 8 more types | 255 | 30016-30023 | Service, deployment, audit, etc. |
+
+### On-Chain Trust Layer (Base Mainnet)
+
+| Component | Detail |
+|:---|:---|
+| AgentRegistry.sol | 17 agents scored, 0-10000 scale |
+| Avg Reputation | 9,000 |
+| Platinum Agents (>9500) | 7 |
+| Proof Chain Depth | 248 chains (SHA-256 linked) |
+| Identity Auth | Per-agent HMAC-SHA256 API keys |
+| Encrypted Backup | Kind 30099 (AES-256-GCM) to 3 relays |
+| Key Derivation | `HMAC-SHA256(MASTER_SECRET, "{agent}:proof-encrypt")` |
+
+### Sample Proof Chain Hashes
+```
+benchmark-analyst  40a93e305a8fcc5ef9e134ddf9d46460...
+financial-analyst  42713b49dbe36226d2afba6a...
+byzantine-consensus 46d2e842efd661a26b220f02...
++ 245 more chains across 82 agents
+```
 
 ## Tech Stack
 
