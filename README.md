@@ -53,17 +53,6 @@ python demo/venice_intelligence.py --question "Will ETH exceed $10,000 by Q3 202
 python demo/meta_demo.py --dry-run
 ```
 
-## 3-Act Demo Walkthrough
-
-### Act 1 -- Identity (60s)
-Agent provisions Nostr keypair (secp256k1), generates HMAC-SHA256 API key, creates SQLite identity DB, registers on AgentRegistry.sol, publishes AES-256-GCM encrypted capability proof to 3 Nostr relays.
-
-### Act 2 -- Payment + Agreement (120s)
-Second agent discovers first via A2A agent card (JSON-RPC 2.0). Calls x402 gateway, receives HTTP 402, pays 0.0005 USDC on Base. Position recorded on PrivateClaimVerifier.sol as keccak256 commitment -- position never revealed on-chain.
-
-### Act 3 -- Resolution + Privacy (120s)
-Market resolves via multi-AI consensus (67% Byzantine threshold). Winner reveals commitment, contract verifies hash. Settlement via blind-signed Fedimint eCash -- untraceable. Reputation updates on AgentRegistry.sol.
-
 ## Verified Contracts (Base Mainnet)
 
 | Contract | Address | Purpose |
